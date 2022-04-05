@@ -66,7 +66,6 @@ def combineEng(df):
     df['user_lang'].replace('en-gb', 'en', inplace=True)
     df['user_lang'].replace('en-GB', 'en', inplace=True)
     df['user_lang'].replace('en-AU', 'en', inplace=True)
-    df['user_lang'].replace('en-', 'en', inplace=True)
     return df
 
 
