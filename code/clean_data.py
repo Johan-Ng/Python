@@ -43,7 +43,7 @@ def checkDates(df):
     return df
 
 #Checks that if the info in the created at column is a date
-def caRegex(inp):
+def caVer(inp):
     try:
         parser.parse(str(inp))
         return True
@@ -52,7 +52,7 @@ def caRegex(inp):
 
 #Removed all the rows that does not satified the format in their created date column
 def checkCreatedAt(df):
-    df = df[df['created_at'].map(caRegex) == True]
+    df = df[df['created_at'].map(caVer) == True]
     return df
 
 #Outputs updated dataframe to a new CSV file.
@@ -60,6 +60,14 @@ def writeToCSV(df):
     print("Updating CSV...")
     df.to_csv('../data/CometLandingRefined.csv', index=False)
     print("CSV Updated!")
+
+
+def combineEng(df):
+    df['user_lang'].replace('en-gb', 'en', inplace=True)
+    df['user_lang'].replace('en-GB', 'en', inplace=True)
+    df['user_lang'].replace('en-AU', 'en', inplace=True)
+    df['user_lang'].replace('en-', 'en', inplace=True)
+    return df
 
 
 def main():
@@ -87,6 +95,7 @@ def main():
         df = checkType(df, cn)
     df = checkDates(df)
     df = checkCreatedAt(df)
+    df = combineEng(df)
     #End of cleanup functions.
 
     print("Data Cleaned!")
