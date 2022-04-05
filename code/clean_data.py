@@ -42,6 +42,7 @@ def checkDates(df):
     df = df[df['time'].map(validate) == True]
     return df
 
+#Checks that if the info in the created at column is a date
 def caRegex(inp):
     try:
         parser.parse(str(inp))
@@ -49,6 +50,7 @@ def caRegex(inp):
     except:
         return False
 
+#Removed all the rows that does not satified the format in their created date column
 def checkCreatedAt(df):
     df = df[df['created_at'].map(caRegex) == True]
     return df
