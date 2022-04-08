@@ -49,7 +49,7 @@ def checkDates(df):
 #Outputs updated dataframe to a new CSV file.
 def writeToCSV(df):
     print("Updating CSV...")
-    df.to_csv('../data/CometLandingRefined.csv', index=True)
+    df.to_csv('../data/CometLandingRefined.csv', index=False)
     print("CSV Updated!")
 
 
@@ -78,7 +78,6 @@ def main():
 
     print("Cleaning Data...")
     #Run Cleanup functions
-    df = df.set_index('id_str')
     df = removeDuplicates(df)
     df = dropRowsWithEmptyFields(df, mandatory_columns)
 

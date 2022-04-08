@@ -2,7 +2,7 @@ import unittest
 import clean_data
 import random
 import pandas as pd
-import beavis
+
 
 # https://stackoverflow.com/questions/13605669/python-unittest-can-we-repeat-unit-test-case-execution-for-a-configurable-numbe
 
