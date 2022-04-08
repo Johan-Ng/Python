@@ -32,7 +32,7 @@ def checkType(df, column_name):
 
 #Check that dates match an appropriate regex.
 def validate(inp):
-    if (re.match("^((0[1-9])|([12][0-9])|(3[01]))\/(([0][1-9])|([1][012]))\/\d\d\d\d\s([0-1]?\d|2?[0-3]):([0-5]\d)$", str(inp))):
+    if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d\d\d\d\s(([0-1]\d)|(2[0-4])):[0-5]\d:[0-5]\d$", str(inp))):
         return True
     else:
         return False
