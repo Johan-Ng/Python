@@ -4,19 +4,20 @@ import sys
 import re
 from dateutil import parser
 
-#Removes any entries with the same ID.
+# Removes any entries with the same ID.
 def removeDuplicates(df):
     print('Duplicte IDs before: ' + str(df.id_str.duplicated().sum()))
     df = df.drop_duplicates(subset=['id_str'], keep='first')
     print('Duplicte IDs after: ' + str(df.id_str.duplicated().sum()))
     return df
 
-#Removes any rows with empty fields that we have not allowed to be empty.
+# Removes any rows with empty fields that we have not allowed to be empty.
 def dropRowsWithEmptyFields(df, columns):
     df = df.dropna(axis=0, how='any', subset=columns)
+    df = df[df[columns].map(isNotWhite) == True]
     return df
 
-#Checks if input is empty or an int and returns True if a match.
+# Checks if input is empty or an int and returns True if a match.
 def checkInt(inp):
     try:
         if(math.isnan(inp)):
@@ -29,36 +30,44 @@ def checkInt(inp):
     except:
         return False
 
-#Ensures contained data is an int.
+# Ensures contained data is an int.
 def checkType(df, column_name):
     df = df[df[column_name].map(checkInt) == True]
     return df
 
-#Check that dates match an appropriate regex.
+# Checks that the row isn't an empty string
+def isNotWhite(inp):
+    if (re.match("^\s*$", str(inp))):
+        return False
+    else:
+        return True
+
+# Check that dates match an appropriate regex.
 def validate(inp):
     if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d{4}\s(([0-1]\d)|(2[0-4])):[0-5]\d$", str(inp))):
         return True
     else:
         return False
 
-#Validates the format of all the date-times.
+# Validates the format of all the date-times.
 def checkDates(df):
     df = df[df['time'].map(validate) == True]
     return df
 
-#Outputs updated dataframe to a new CSV file.
+# Outputs updated dataframe to a new CSV file.
 def writeToCSV(df):
     print("Updating CSV...")
     df.to_csv('../data/CometLandingRefined.csv', index=False)
     print("CSV Updated!")
 
-#Changing all types of english into english
+# Changing all types of english into english
 def combineEng(df):
     df['user_lang'].replace('en-gb', 'en', inplace=True)
     df['user_lang'].replace('en-GB', 'en', inplace=True)
     df['user_lang'].replace('en-AU', 'en', inplace=True)
     return df
 
+# Drops a specified column
 def dropColumn(df, column):
     df.drop( column, inplace=True, axis=1)
     return df
