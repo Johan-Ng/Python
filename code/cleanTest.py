@@ -1,7 +1,8 @@
 import unittest
-import clean_data
 import random
 import pandas as pd
+import clean_data
+
 
 
 # Copied from https://stackoverflow.com/questions/13605669/python-unittest-can-we-repeat-unit-test-case-execution-for-a-configurable-numbe
@@ -35,7 +36,7 @@ class cleanTest(unittest.TestCase):
         self.assertTrue(result)
     
     # Tests that checkInt will return flase when the argument passing into it is not an int
-    def test_checkString(self):
+    def test_checkNotInt(self):
         string = 'String'
         result = clean_data.checkInt(string)
         self.assertFalse(result)
@@ -47,7 +48,7 @@ class cleanTest(unittest.TestCase):
         self.assertTrue(result)
 
     # Tests that isNotWhite will return false when the argument passing into it is a blank string
-    def test_isNotWhite(self):
+    def test_isWhite(self):
         string = ' '
         result = clean_data.isNotWhite(string)
         self.assertFalse(result)
@@ -59,7 +60,7 @@ class cleanTest(unittest.TestCase):
         self.assertTrue(result)
     
     # Tests that validte will return false when the argument passing into it is in the incorrect date-time format
-    def test_invalideTime(self):
+    def test_invalideDate(self):
         date = "12/13/2014 18:07"
         result = clean_data.validate(date)
         self.assertFalse(result)
@@ -100,8 +101,8 @@ class cleanTest(unittest.TestCase):
         pd.testing.assert_frame_equal(df, dfExpected)
     
     # Checks that dropRowsWithEmptyFields will removed the empty rows in the given column
-    def test_dropRowsWithEmpty(self):
-        df = clean_data.dropRowsWithEmptyFields(self.df, 'withEmpty')
+    def test_dropRowsWithEmptyFields(self):
+        df = clean_data.dropRowsWithEmptyFields(self.df, ['withEmpty'])
         df['mustInt']=df['mustInt'].apply(lambda x:int(x))
         dfExpected = pd.DataFrame({'id_str':['1'],'time':["05/12/2014 18:07"],'user_lang':['en-gb'],'mustInt':[1], 'withEmpty':['1']})
         pd.testing.assert_frame_equal(df, dfExpected)
