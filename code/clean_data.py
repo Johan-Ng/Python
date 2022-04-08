@@ -36,7 +36,7 @@ def checkType(df, column_name):
 
 #Check that dates match an appropriate regex.
 def validate(inp):
-    if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d\d\d\d\s(([0-1]\d)|(2[0-4])):[0-5]\d$", str(inp))):
+    if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d{4}\s(([0-1]\d)|(2[0-4])):[0-5]\d$", str(inp))):
         return True
     else:
         return False
@@ -52,13 +52,16 @@ def writeToCSV(df):
     df.to_csv('../data/CometLandingRefined.csv', index=False)
     print("CSV Updated!")
 
-
+#Changing all types of english into english
 def combineEng(df):
     df['user_lang'].replace('en-gb', 'en', inplace=True)
     df['user_lang'].replace('en-GB', 'en', inplace=True)
     df['user_lang'].replace('en-AU', 'en', inplace=True)
     return df
 
+def dropColumn(df, column):
+    df = df.drop( column, inplace=True, axis=1)
+    return df
 
 def main():
 
@@ -85,9 +88,9 @@ def main():
         df = checkType(df, cn)
     df = checkDates(df)
     #'created_at' is very similar to 'time', so lets drop it.
-    df.drop('created_at', inplace=True, axis=1)
+    df = dropColumn(df, 'created_at')
     #'geo_coordinates' is not a very helpful column - lets also drop that.
-    df.drop('geo_coordinates', inplace=True, axis=1)
+    df = dropColumn(df, 'geo_coordinates')
     df = combineEng(df)
     #End of cleanup functions.
 
