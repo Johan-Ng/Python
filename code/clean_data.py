@@ -32,7 +32,7 @@ def checkType(df, column_name):
 
 #Check that dates match an appropriate regex.
 def validate(inp):
-    if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d\d\d\d\s(([0-1]\d)|(2[0-4])):[0-5]\d:[0-5]\d$", str(inp))):
+    if (re.match("^((0[1-9])|([12]\d)|(3[01]))\/(([0][1-9])|([1][012]))\/\d\d\d\d\s(([0-1]\d)|(2[0-4])):[0-5]\d$", str(inp))):
         return True
     else:
         return False
@@ -40,19 +40,6 @@ def validate(inp):
 #Validates the format of all the date-times.
 def checkDates(df):
     df = df[df['time'].map(validate) == True]
-    return df
-
-#Checks that if the info in the created at column is a date
-def caVer(inp):
-    try:
-        parser.parse(str(inp))
-        return True
-    except:
-        return False
-
-#Removed all the rows that does not satified the format in their created date column
-def checkCreatedAt(df):
-    df = df[df['created_at'].map(caVer) == True]
     return df
 
 #Outputs updated dataframe to a new CSV file.
@@ -93,7 +80,10 @@ def main():
     for cn in columns:
         df = checkType(df, cn)
     df = checkDates(df)
-    df = checkCreatedAt(df)
+    #'created_at' is very similar to 'time', so lets drop it.
+    df.drop('created_at', inplace=True, axis=1)
+    #'geo_coordinates' is not a very helpful column - lets also drop that.
+    df.drop('geo_coordinates', inplace=True, axis=1)
     df = combineEng(df)
     #End of cleanup functions.
 
