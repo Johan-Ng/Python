@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 import sys
 import re
@@ -17,8 +18,11 @@ def dropRowsWithEmptyFields(df, columns):
 
 #Checks if input is empty or an int and returns True if a match.
 def checkInt(inp):
-    if(re.match('\s*', str(inp))):
-        return True
+    try:
+        if(math.isnan(inp)):
+            return True
+    except:
+        return False
     try:
         int(inp)
         return True
