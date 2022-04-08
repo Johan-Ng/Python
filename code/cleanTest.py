@@ -22,10 +22,11 @@ def genInt():
 
 
 class cleanTest(unittest.TestCase):
-
+    # This will run before every singl test
     def setUp(self):
         self.df = pd.DataFrame({'id_str':[ '1','2','1'],'time':["05/12/2014 18:07", "12/13/2014 18:07", "05/12/2014 18:05"],'user_lang':['en-gb','en-GB','en-AU'],'mustInt':[1,'string','ImNotInt']})
 
+    # Passing random int within the range of 0-1000000 into the checkInt 
     @repeat(5)
     def test_checkInt(self):
         print("run")
@@ -48,7 +49,6 @@ class cleanTest(unittest.TestCase):
         self.assertFalse(result)
 
     def test_combineEng(self):
-        
         df = clean_data.combineEng(self.df)
         dfExpected = pd.DataFrame({'id_str':[ '1','2','1'],'time':["05/12/2014 18:07", "12/13/2014 18:07", "05/12/2014 18:05"],'user_lang':['en','en','en'],'mustInt':[1,'string','ImNotInt']})
         pd.testing.assert_frame_equal(df, dfExpected)
@@ -71,6 +71,12 @@ class cleanTest(unittest.TestCase):
         dfExpected = dfExpected.set_index('id_str')
         pd.testing.assert_frame_equal(df, dfExpected)
 
+    def test_dropColumn(self):
+
+        df = clean_data.dropColumn(self.df,'id_str')
+        dfExpected = pd.DataFrame({'time':["05/12/2014 18:07", "12/13/2014 18:07", "05/12/2014 18:05"],'user_lang':['en-gb','en-GB','en-AU'],'mustInt':[1,'string','ImNotInt']})
+        
+        pd.testing.assert_frame_equal(df, dfExpected)
 
 if __name__ =='__main__':
     unittest.main()

@@ -60,7 +60,7 @@ def combineEng(df):
     return df
 
 def dropColumn(df, column):
-    df = df.drop( column, inplace=True, axis=1)
+    df.drop( column, inplace=True, axis=1)
     return df
 
 def main():
@@ -88,9 +88,9 @@ def main():
         df = checkType(df, cn)
     df = checkDates(df)
     #'created_at' is very similar to 'time', so lets drop it.
-    df = dropColumn(df, 'created_at')
+    dropColumn(df, 'created_at')
     #'geo_coordinates' is not a very helpful column - lets also drop that.
-    df = dropColumn(df, 'geo_coordinates')
+    dropColumn(df, 'geo_coordinates')
     df = combineEng(df)
     #End of cleanup functions.
 
