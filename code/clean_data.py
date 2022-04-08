@@ -14,7 +14,8 @@ def removeDuplicates(df):
 # Removes any rows with empty fields that we have not allowed to be empty.
 def dropRowsWithEmptyFields(df, columns):
     df = df.dropna(axis=0, how='any', subset=columns)
-    df = df[df[columns].map(isNotWhite) == True]
+    for i in range(len(columns)):
+        df = df[df[columns[i]].map(isNotWhite) == True]
     return df
 
 # Checks if input is empty or an int and returns True if a match.
